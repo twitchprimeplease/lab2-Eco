@@ -29,6 +29,10 @@ function draw() {
     });
 
     text(pokeText, 500,windowHeight/2)
+    if(pokeSprites[0] != null){
+        image(pokeSprites[0],500,500,100,100);
+    }
+  
     // pokeSprites.forEach(element => {
     //     if (element =! null) {
     //         image(element,100,y)
@@ -64,26 +68,29 @@ const fetchPokemonList = async () => {
         results.forEach(element => {
             fetchedPokemon.push(element);
             
-            let temporaryArray = element.url.split('/');
-        element.sprite = SPRITE_PATH_URL + temporaryArray[6] + '.png';
-        loadImage(element.sprite, image => {
-            element.pImage = image
-            pokeSprites.push(image)
-        })
         });
+        console.log(fetchedPokemon)
+        // let temporaryArray = element.url.split('/');
+        // element.sprite = SPRITE_PATH_URL + temporaryArray[6] + '.png';
+        // loadImage(element.sprite, image => {
+        //     element.pImage = image
+        //     pokeSprites.push(image)
+        // })
         console.log(pokeSprites)
 
         let temporaryArray = pokemon.url.split('/');
         pokemon.sprite = SPRITE_PATH_URL + temporaryArray[6] + '.png';
-        loadImage(pokemon.sprite, image => {
+        await loadImage(pokemon.sprite, image => {
             pokemon.pImage = image
-            let bulbasur = pokemon
-            pokeSprites.push(pokemon.sprite)
-            fetchedPokemon.forEach(element => {
-                pokemonArray.push(new Pokemon(element));
-            });
-            
+            pokeSprites.push(pokemon.sprite)   
         })
+
+        console.log(pokeSprites);
+
+        fetchedPokemon.forEach(element => {
+            pokemonArray.push(new Pokemon(element));
+
+        });
     }
     catch (error) {
         console.log(error);
