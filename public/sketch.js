@@ -5,8 +5,10 @@ let pokeSprites = [];
 let pNumber = 0;
 let pokeText = 'Selecciona un Pokemon';
 
+
 function preload() {
     fetchPokemonList()
+
 }
 
 function setup() {
@@ -29,20 +31,17 @@ function draw() {
     });
 
     text(pokeText, 500,windowHeight/2)
-    if(pokeSprites[0] != null){
-        image(pokeSprites[0],500,500,100,100);
-    }
-  
-    // pokeSprites.forEach(element => {
-    //     if (element =! null) {
-    //         image(element,100,y)
-    //     }
-
-    // })
+    let iX = 150;
+    let iY = 40;
+    pokeSprites.forEach(element => {
+        image(element,iX,iY,100,100);
+        iY += 100
+    });
+    
 }
 
 function mouseClicked(){
-
+    console.log("help")
     
 }
 
@@ -67,26 +66,19 @@ const fetchPokemonList = async () => {
         let fetchedPokemon = [];
         results.forEach(element => {
             fetchedPokemon.push(element);
+            let temporaryArray = element.url.split('/');
+            element.sprite = SPRITE_PATH_URL + temporaryArray[6] + '.png';
             
+            pokeSprites.push(loadImage(element.sprite));
         });
-        console.log(fetchedPokemon)
-        // let temporaryArray = element.url.split('/');
-        // element.sprite = SPRITE_PATH_URL + temporaryArray[6] + '.png';
-        // loadImage(element.sprite, image => {
-        //     element.pImage = image
-        //     pokeSprites.push(image)
-        // })
-        console.log(pokeSprites)
-
-        let temporaryArray = pokemon.url.split('/');
-        pokemon.sprite = SPRITE_PATH_URL + temporaryArray[6] + '.png';
-        await loadImage(pokemon.sprite, image => {
-            pokemon.pImage = image
-            pokeSprites.push(pokemon.sprite)   
-        })
-
+        console.log(fetchedPokemon);
         console.log(pokeSprites);
-
+        pokeSprites.forEach(element => {
+            loadImage(element, image => {
+            element.pImage = image;
+        })
+        });
+        
         fetchedPokemon.forEach(element => {
             pokemonArray.push(new Pokemon(element));
 
